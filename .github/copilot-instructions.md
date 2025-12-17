@@ -37,7 +37,7 @@ pyGauntlet is an implementation of the classic Gauntlet II arcade game using pyg
 ### Game-Specific Features
 - Support multiple character classes (Warrior, Valkyrie, Wizard, Elf)
 - Implement various enemy types with different behaviors
-- Create a health/food system similar to the original game
+- Create a health system with food consumption mechanics (health constantly decreases, food restores it)
 - Support multiplayer (local co-op)
 - Implement power-ups and special items (potions, keys, treasure)
 - Create procedural or hand-designed dungeon levels
@@ -84,7 +84,7 @@ pyGauntlet is an implementation of the classic Gauntlet II arcade game using pyg
 
 ### Game Loop
 ```python
-FPS = 60
+FPS = 60  # Target frame rate; consider making configurable for different hardware
 clock = pygame.time.Clock()
 running = True
 while running:
