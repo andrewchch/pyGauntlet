@@ -23,8 +23,8 @@ class Game:
         
         # Initialize game objects
         self.game_map = GameMap()
-        # Place player at a safe starting position (tile 15, 15)
-        self.player = Player(15 * TILE_SIZE, 15 * TILE_SIZE)
+        # Place player at a safe starting position
+        self.player = Player(PLAYER_START_X * TILE_SIZE, PLAYER_START_Y * TILE_SIZE)
         self.camera = Camera(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE)
         
         # Sprite groups
@@ -38,8 +38,8 @@ class Game:
     
     def reset_game(self):
         """Reset the game to initial state"""
-        # Reset player
-        self.player = Player(15 * TILE_SIZE, 15 * TILE_SIZE)
+        # Reset player to starting position
+        self.player = Player(PLAYER_START_X * TILE_SIZE, PLAYER_START_Y * TILE_SIZE)
         
         # Reset camera
         self.camera = Camera(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE)

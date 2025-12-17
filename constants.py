@@ -31,6 +31,10 @@ SPAWN_INTERVAL = 3000  # milliseconds
 MAP_WIDTH = 40
 MAP_HEIGHT = 30
 
+# Player starting position (in tiles)
+PLAYER_START_X = 15
+PLAYER_START_Y = 15
+
 # Game states
 STATE_MENU = 0
 STATE_PLAYING = 1
