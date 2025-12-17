@@ -40,3 +40,7 @@ STATE_MENU = 0
 STATE_PLAYING = 1
 STATE_PAUSED = 2
 STATE_GAME_OVER = 3
+
+# Animation settings
+SPRITE_FRAME_SIZE = 64  # Size of each sprite frame in pixels
+ANIMATION_SPEED = 0.15  # Animation speed (frames advanced per update)
