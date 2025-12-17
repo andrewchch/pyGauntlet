@@ -6,6 +6,7 @@ from constants import *
 from player import Player
 from game_map import GameMap
 from camera import Camera
+from menu import Menu
 
 class Game:
     """Main game class that manages the game loop"""
@@ -15,6 +16,10 @@ class Game:
         pygame.display.set_caption("pyGauntlet")
         self.clock = pygame.time.Clock()
         self.running = True
+        self.state = STATE_MENU
+        
+        # Initialize menu
+        self.menu = Menu(self.screen)
         
         # Initialize game objects
         self.game_map = GameMap()
@@ -37,7 +42,10 @@ class Game:
             current_time = pygame.time.get_ticks()
             
             self.handle_events(current_time)
-            self.update(current_time)
+            
+            if self.state == STATE_PLAYING:
+                self.update(current_time)
+            
             self.draw()
             
             self.clock.tick(FPS)
@@ -48,8 +56,17 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    self.shoot(current_time)
+                if event.key == pygame.K_ESCAPE:
+                    if self.state == STATE_PLAYING:
+                        self.state = STATE_PAUSED
+                    elif self.state == STATE_PAUSED:
+                        self.state = STATE_PLAYING
+                elif self.state == STATE_PLAYING:
+                    if event.key == pygame.K_SPACE:
+                        self.shoot(current_time)
+                elif self.state in (STATE_MENU, STATE_PAUSED):
+                    if self.menu.handle_input(event):
+                        self.state = STATE_PLAYING
     
     def shoot(self, current_time):
         """Fire a projectile"""
@@ -89,27 +106,33 @@ class Game:
         """Draw the game"""
         self.screen.fill(BLACK)
         
-        # Draw walls
-        for wall in self.game_map.walls:
-            self.screen.blit(wall.image, self.camera.apply(wall))
+        if self.state == STATE_PLAYING or self.state == STATE_PAUSED:
+            # Draw walls
+            for wall in self.game_map.walls:
+                self.screen.blit(wall.image, self.camera.apply(wall))
+            
+            # Draw generators
+            for generator in self.game_map.generators:
+                self.screen.blit(generator.image, self.camera.apply(generator))
+            
+            # Draw enemies
+            for enemy in self.enemies:
+                self.screen.blit(enemy.image, self.camera.apply(enemy))
+            
+            # Draw projectiles
+            for projectile in self.projectiles:
+                self.screen.blit(projectile.image, self.camera.apply(projectile))
+            
+            # Draw player
+            self.screen.blit(self.player.image, self.camera.apply(self.player))
+            
+            # Draw UI
+            self.draw_ui()
         
-        # Draw generators
-        for generator in self.game_map.generators:
-            self.screen.blit(generator.image, self.camera.apply(generator))
-        
-        # Draw enemies
-        for enemy in self.enemies:
-            self.screen.blit(enemy.image, self.camera.apply(enemy))
-        
-        # Draw projectiles
-        for projectile in self.projectiles:
-            self.screen.blit(projectile.image, self.camera.apply(projectile))
-        
-        # Draw player
-        self.screen.blit(self.player.image, self.camera.apply(self.player))
-        
-        # Draw UI
-        self.draw_ui()
+        if self.state == STATE_MENU:
+            self.menu.draw(is_paused=False)
+        elif self.state == STATE_PAUSED:
+            self.menu.draw(is_paused=True)
         
         pygame.display.flip()
     
