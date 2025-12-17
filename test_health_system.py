@@ -15,6 +15,7 @@ def test_health_system():
     print("=" * 50)
     
     pygame.init()
+    pygame.display.set_mode((800, 600))  # Initialize display mode
     
     # Test 1: Player initial health
     print("\nTest 1: Player initial health...")
