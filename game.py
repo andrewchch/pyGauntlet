@@ -18,7 +18,8 @@ class Game:
         
         # Initialize game objects
         self.game_map = GameMap()
-        self.player = Player(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        # Place player at a safe starting position (tile 15, 15)
+        self.player = Player(15 * TILE_SIZE, 15 * TILE_SIZE)
         self.camera = Camera(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE)
         
         # Sprite groups
