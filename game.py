@@ -80,10 +80,13 @@ class Game:
         for projectile in self.projectiles:
             projectile.update(self.game_map.walls, self.enemies)
         
-        # Check if player collides with enemy (game over condition could be added)
-        if pygame.sprite.spritecollideany(self.player, self.enemies):
-            # For now, just reduce enemy count by destroying the enemy
-            hit_enemies = pygame.sprite.spritecollide(self.player, self.enemies, True)
+        # Check if player collides with enemy and take damage
+        hit_enemies = pygame.sprite.spritecollide(self.player, self.enemies, True)
+        for enemy in hit_enemies:
+            self.player.take_damage(enemy.damage)
+            # Check for game over
+            if self.player.health <= 0:
+                self.running = False
     
     def draw(self):
         """Draw the game"""
@@ -117,6 +120,6 @@ class Game:
         """Draw UI elements"""
         font = pygame.font.Font(None, 36)
         
-        # Draw enemy count
-        enemy_text = font.render(f"Enemies: {len(self.enemies)}", True, WHITE)
-        self.screen.blit(enemy_text, (10, 10))
+        # Draw player health
+        health_text = font.render(f"Health: {self.player.health}", True, WHITE)
+        self.screen.blit(health_text, (10, 10))

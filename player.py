@@ -16,6 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = y
         self.speed = PLAYER_SPEED
         self.last_direction = (0, -1)  # Up by default
+        self.health = 1000  # Initial health
         
     def update(self, keys, walls):
         """Update player position based on input"""
@@ -59,3 +60,9 @@ class Player(pygame.sprite.Sprite):
             self.rect.centery,
             self.last_direction
         )
+    
+    def take_damage(self, damage):
+        """Reduce player health by damage amount"""
+        self.health -= damage
+        if self.health < 0:
+            self.health = 0
