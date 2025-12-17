@@ -45,6 +45,7 @@ pyGauntlet is an implementation of the classic Gauntlet II arcade game using pyg
 
 ### Testing
 - Write unit tests for game logic (health calculations, collision detection, scoring)
+- All unit tests should be in a separate `tests/` directory
 - Test edge cases (player death, level completion, item pickup)
 - Manual testing for gameplay feel and balance
 - Test on different screen resolutions

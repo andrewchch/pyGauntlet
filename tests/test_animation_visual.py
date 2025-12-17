@@ -14,7 +14,7 @@ def main():
     clock = pygame.time.Clock()
     
     # Create animated character in center of screen
-    sprite_path = 'resources/sprites/character-spritesheet.png'
+    sprite_path = '../resources/sprites/character-spritesheet.png'
     char = AnimatedCharacter(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, sprite_path)
     
     running = True

@@ -14,7 +14,7 @@ def test_sprite_sheet_loading():
     pygame.init()
     pygame.display.set_mode((800, 600))  # Need display mode to load images
     
-    sprite_path = 'resources/sprites/character-spritesheet.png'
+    sprite_path = '../resources/sprites/character-spritesheet.png'
     char = AnimatedCharacter(100, 100, sprite_path)
     
     # Verify sprite sheet was loaded
@@ -31,7 +31,7 @@ def test_animation_frames_extracted():
     pygame.init()
     pygame.display.set_mode((800, 600))  # Need display mode to load images
     
-    sprite_path = 'resources/sprites/character-spritesheet.png'
+    sprite_path = '../resources/sprites/character-spritesheet.png'
     char = AnimatedCharacter(100, 100, sprite_path)
     
     # Verify all directions have frames
@@ -62,7 +62,7 @@ def test_direction_change():
     pygame.init()
     pygame.display.set_mode((800, 600))  # Need display mode to load images
     
-    sprite_path = 'resources/sprites/character-spritesheet.png'
+    sprite_path = '../resources/sprites/character-spritesheet.png'
     char = AnimatedCharacter(100, 100, sprite_path)
     
     # Test all directions
@@ -92,7 +92,7 @@ def test_animation_cycling():
     pygame.init()
     pygame.display.set_mode((800, 600))  # Need display mode to load images
     
-    sprite_path = 'resources/sprites/character-spritesheet.png'
+    sprite_path = '../resources/sprites/character-spritesheet.png'
     char = AnimatedCharacter(100, 100, sprite_path)
     
     # Set character to moving down
@@ -121,7 +121,7 @@ def test_idle_frame():
     pygame.init()
     pygame.display.set_mode((800, 600))  # Need display mode to load images
     
-    sprite_path = 'resources/sprites/character-spritesheet.png'
+    sprite_path = '../resources/sprites/character-spritesheet.png'
     char = AnimatedCharacter(100, 100, sprite_path)
     
     # Set to not moving
@@ -144,7 +144,7 @@ def test_character_positioning():
     pygame.init()
     pygame.display.set_mode((800, 600))  # Need display mode to load images
     
-    sprite_path = 'resources/sprites/character-spritesheet.png'
+    sprite_path = '../resources/sprites/character-spritesheet.png'
     x, y = 200, 300
     char = AnimatedCharacter(x, y, sprite_path)
     
