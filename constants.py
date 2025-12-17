@@ -30,3 +30,8 @@ SPAWN_INTERVAL = 3000  # milliseconds
 # Map dimensions (in tiles)
 MAP_WIDTH = 40
 MAP_HEIGHT = 30
+
+# Game states
+STATE_MENU = 0
+STATE_PLAYING = 1
+STATE_PAUSED = 2
