@@ -1,7 +1,7 @@
 # Copilot Instructions for pyGauntlet
 
 ## Project Overview
-pyGauntlet is an implementation of the classic Gauntlet II arcade game using pygame. The project aims to recreate the dungeon-crawling, multi-player action experience of the original game.
+pyGauntlet is an implementation of the classic Gauntlet II arcade game using pygame. The project aims to recreate the dungeon-crawling, multiplayer action experience of the original game.
 
 ## Development Guidelines
 
@@ -84,10 +84,11 @@ pyGauntlet is an implementation of the classic Gauntlet II arcade game using pyg
 
 ### Game Loop
 ```python
+FPS = 60
 clock = pygame.time.Clock()
 running = True
 while running:
-    dt = clock.tick(60) / 1000.0  # Delta time in seconds
+    dt = clock.tick(FPS) / 1000.0  # Delta time in seconds
     # Handle events
     # Update game state
     # Render
