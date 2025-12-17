@@ -15,6 +15,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.speed = ENEMY_SPEED
+        self.damage = 10  # Damage dealt to player on collision
         
     def update(self, player, walls, game_map):
         """Update enemy position to move toward player"""

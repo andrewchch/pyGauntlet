@@ -23,8 +23,8 @@ class Game:
         
         # Initialize game objects
         self.game_map = GameMap()
-        # Place player at a safe starting position (tile 15, 15)
-        self.player = Player(15 * TILE_SIZE, 15 * TILE_SIZE)
+        # Place player at a safe starting position
+        self.player = Player(PLAYER_START_X * TILE_SIZE, PLAYER_START_Y * TILE_SIZE)
         self.camera = Camera(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE)
         
         # Sprite groups
@@ -34,6 +34,21 @@ class Game:
         # Shooting cooldown
         self.can_shoot = True
         self.shoot_cooldown = 250  # milliseconds
+        self.last_shot_time = 0
+    
+    def reset_game(self):
+        """Reset the game to initial state"""
+        # Reset player to starting position
+        self.player = Player(PLAYER_START_X * TILE_SIZE, PLAYER_START_Y * TILE_SIZE)
+        
+        # Reset camera
+        self.camera = Camera(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE)
+        
+        # Clear all sprites
+        self.enemies.empty()
+        self.projectiles.empty()
+        
+        # Reset shooting cooldown
         self.last_shot_time = 0
         
     def run(self):
@@ -64,8 +79,10 @@ class Game:
                 elif self.state == STATE_PLAYING:
                     if event.key == pygame.K_SPACE:
                         self.shoot(current_time)
-                elif self.state in (STATE_MENU, STATE_PAUSED):
+                elif self.state in (STATE_MENU, STATE_PAUSED, STATE_GAME_OVER):
                     if self.menu.handle_input(event):
+                        if self.state == STATE_GAME_OVER:
+                            self.reset_game()
                         self.state = STATE_PLAYING
     
     def shoot(self, current_time):
@@ -97,16 +114,19 @@ class Game:
         for projectile in self.projectiles:
             projectile.update(self.game_map.walls, self.enemies, self.game_map.generators)
         
-        # Check if player collides with enemy (game over condition could be added)
-        if pygame.sprite.spritecollideany(self.player, self.enemies):
-            # For now, just reduce enemy count by destroying the enemy
-            hit_enemies = pygame.sprite.spritecollide(self.player, self.enemies, True)
+        # Check if player collides with enemy and take damage
+        hit_enemies = pygame.sprite.spritecollide(self.player, self.enemies, True)
+        for enemy in hit_enemies:
+            self.player.take_damage(enemy.damage)
+            # Check for game over
+            if self.player.health <= 0:
+                self.state = STATE_GAME_OVER
     
     def draw(self):
         """Draw the game"""
         self.screen.fill(BLACK)
         
-        if self.state == STATE_PLAYING or self.state == STATE_PAUSED:
+        if self.state == STATE_PLAYING or self.state == STATE_PAUSED or self.state == STATE_GAME_OVER:
             # Draw walls
             for wall in self.game_map.walls:
                 self.screen.blit(wall.image, self.camera.apply(wall))
@@ -130,9 +150,11 @@ class Game:
             self.draw_ui()
         
         if self.state == STATE_MENU:
-            self.menu.draw(is_paused=False)
+            self.menu.draw(is_paused=False, is_game_over=False)
         elif self.state == STATE_PAUSED:
-            self.menu.draw(is_paused=True)
+            self.menu.draw(is_paused=True, is_game_over=False)
+        elif self.state == STATE_GAME_OVER:
+            self.menu.draw(is_paused=False, is_game_over=True)
         
         pygame.display.flip()
     
@@ -140,6 +162,6 @@ class Game:
         """Draw UI elements"""
         font = pygame.font.Font(None, 36)
         
-        # Draw enemy count
-        enemy_text = font.render(f"Enemies: {len(self.enemies)}", True, WHITE)
-        self.screen.blit(enemy_text, (10, 10))
+        # Draw player health
+        health_text = font.render(f"Health: {self.player.health}", True, WHITE)
+        self.screen.blit(health_text, (10, 10))

@@ -13,7 +13,7 @@ class Menu:
         self.font_option = pygame.font.Font(None, 48)
         self.selected_index = 0
         
-    def draw(self, is_paused=False):
+    def draw(self, is_paused=False, is_game_over=False):
         """Draw the menu"""
         # Semi-transparent overlay
         overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -22,13 +22,23 @@ class Menu:
         self.screen.blit(overlay, (0, 0))
         
         # Title
-        title_text = "pyGauntlet"
-        title_surface = self.font_title.render(title_text, True, YELLOW)
+        if is_game_over:
+            title_text = "Game Over!"
+            title_color = RED
+        else:
+            title_text = "pyGauntlet"
+            title_color = YELLOW
+        
+        title_surface = self.font_title.render(title_text, True, title_color)
         title_rect = title_surface.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 3))
         self.screen.blit(title_surface, title_rect)
         
         # Menu option
-        option_text = "Resume" if is_paused else "Play"
+        if is_paused:
+            option_text = "Resume"
+        else:
+            option_text = "Play"
+        
         option_color = GREEN if self.selected_index == 0 else WHITE
         option_surface = self.font_option.render(option_text, True, option_color)
         option_rect = option_surface.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
