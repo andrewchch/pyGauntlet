@@ -73,7 +73,7 @@ def run_tests():
         initial_x = projectile.rect.x
         
         # Update projectile
-        projectile.update(game.game_map.walls, game.enemies)
+        projectile.update(game.game_map.walls, game.enemies, game.game_map.generators)
         
         # Projectile should have moved
         # Note: projectile moves in the direction, so at least one coordinate should change
