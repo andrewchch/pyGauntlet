@@ -9,6 +9,14 @@ from game import Game
 from constants import *
 
 
+class KeyState:
+    """Helper class to simulate key presses in tests"""
+    def __init__(self, active_key):
+        self.active_key = active_key
+    def __getitem__(self, key):
+        return key == self.active_key
+
+
 def test_player_spawns_without_collision():
     """Test that player spawns in a position without wall collision"""
     pygame.init()
@@ -26,12 +34,9 @@ def test_player_can_move_in_all_directions():
     pygame.init()
     game = Game()
     
-    # Helper class to simulate key presses
-    class KeyState:
-        def __init__(self, active_key):
-            self.active_key = active_key
-        def __getitem__(self, key):
-            return key == self.active_key
+    # Safe starting position (same as game spawn)
+    SAFE_X = 15 * TILE_SIZE
+    SAFE_Y = 15 * TILE_SIZE
     
     # Test all four directions
     directions = [
@@ -43,8 +48,8 @@ def test_player_can_move_in_all_directions():
     
     for key, axis, expected_delta, name in directions:
         # Reset player to safe starting position
-        game.player.rect.x = 480
-        game.player.rect.y = 480
+        game.player.rect.x = SAFE_X
+        game.player.rect.y = SAFE_Y
         
         initial_value = getattr(game.player.rect, axis)
         keys = KeyState(key)
@@ -68,13 +73,6 @@ def test_player_collision_with_walls():
     # Place player at (9, 10) in tiles = (288, 320) in world
     game.player.rect.x = 9 * TILE_SIZE
     game.player.rect.y = 10 * TILE_SIZE
-    
-    # Try to move right (into the wall)
-    class KeyState:
-        def __init__(self, active_key):
-            self.active_key = active_key
-        def __getitem__(self, key):
-            return key == self.active_key
     
     initial_x = game.player.rect.x
     keys = KeyState(pygame.K_RIGHT)
