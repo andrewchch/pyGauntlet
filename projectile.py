@@ -16,7 +16,7 @@ class Projectile(pygame.sprite.Sprite):
         self.direction = direction
         self.speed = PROJECTILE_SPEED
         
-    def update(self, walls, enemies):
+    def update(self, walls, enemies, generators=None):
         """Update projectile position"""
         # Move in direction
         self.rect.x += self.direction[0] * self.speed
@@ -26,6 +26,12 @@ class Projectile(pygame.sprite.Sprite):
         if pygame.sprite.spritecollideany(self, walls):
             self.kill()
             return
+        
+        # Check if hit generator (damages generator but doesn't destroy projectile)
+        if generators:
+            hit_generators = pygame.sprite.spritecollide(self, generators, False)
+            for generator in hit_generators:
+                generator.take_damage()
         
         # Check if hit enemy
         hit_enemies = pygame.sprite.spritecollide(self, enemies, True)

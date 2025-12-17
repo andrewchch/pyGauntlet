@@ -17,7 +17,14 @@ class Generator(pygame.sprite.Sprite):
         self.rect.y = y * TILE_SIZE
         self.last_spawn_time = 0
         self.spawn_interval = SPAWN_INTERVAL
+        self.health = 3  # Takes 3 hits to destroy
         
+    def take_damage(self):
+        """Reduce health when hit by projectile"""
+        self.health -= 1
+        if self.health <= 0:
+            self.kill()
+    
     def update(self, current_time, enemies):
         """Spawn enemies at intervals"""
         if current_time - self.last_spawn_time >= self.spawn_interval:
