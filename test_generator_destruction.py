@@ -74,10 +74,18 @@ def test_generator_destruction():
     generators3 = pygame.sprite.Group()
     generators3.add(gen3)
     
+    projectiles = pygame.sprite.Group()
+    
     # Fire 3 projectiles to destroy generator
     for i in range(3):
-        proj = Projectile(gen3.rect.centerx, gen3.rect.centery, (1, 0))
-        proj.update(walls, enemies, generators3)
+        # Create projectile outside generator bounds moving toward it
+        proj = Projectile(gen3.rect.centerx - 50, gen3.rect.centery, (1, 0))
+        projectiles.add(proj)
+        # Update projectile to move toward and hit generator
+        for _ in range(10):
+            proj.update(walls, enemies, generators3)
+            if not proj.alive():
+                break
         print(f"  Hit {i+1}: Generator health = {gen3.health}")
     
     assert gen3.health == 0, f"Expected health 0 after 3 projectile hits, got {gen3.health}"
