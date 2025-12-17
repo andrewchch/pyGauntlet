@@ -19,7 +19,7 @@ def create_menu_screenshots():
     print("Creating screenshot of initial menu...")
     game.state = STATE_MENU
     game.draw()
-    pygame.image.save(game.screen, "/home/runner/work/pyGauntlet/pyGauntlet/screenshot_menu_initial.png")
+    pygame.image.save(game.screen, "screenshot_menu_initial.png")
     print("✓ Saved: screenshot_menu_initial.png")
     
     # Screenshot 2: Game playing
@@ -30,14 +30,14 @@ def create_menu_screenshots():
         current_time = pygame.time.get_ticks()
         game.update(current_time)
     game.draw()
-    pygame.image.save(game.screen, "/home/runner/work/pyGauntlet/pyGauntlet/screenshot_gameplay.png")
+    pygame.image.save(game.screen, "screenshot_gameplay.png")
     print("✓ Saved: screenshot_gameplay.png")
     
     # Screenshot 3: Paused menu (STATE_PAUSED with "Resume")
     print("Creating screenshot of pause menu...")
     game.state = STATE_PAUSED
     game.draw()
-    pygame.image.save(game.screen, "/home/runner/work/pyGauntlet/pyGauntlet/screenshot_menu_paused.png")
+    pygame.image.save(game.screen, "screenshot_menu_paused.png")
     print("✓ Saved: screenshot_menu_paused.png")
     
     print("\nAll screenshots created successfully!")
