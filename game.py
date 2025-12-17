@@ -95,7 +95,7 @@ class Game:
         
         # Update projectiles
         for projectile in self.projectiles:
-            projectile.update(self.game_map.walls, self.enemies)
+            projectile.update(self.game_map.walls, self.enemies, self.game_map.generators)
         
         # Check if player collides with enemy (game over condition could be added)
         if pygame.sprite.spritecollideany(self.player, self.enemies):

@@ -41,7 +41,7 @@ def create_action_screenshot():
         
         # Update projectiles
         for projectile in game.projectiles:
-            projectile.update(game.game_map.walls, game.enemies)
+            projectile.update(game.game_map.walls, game.enemies, game.game_map.generators)
     
     # Update camera to center on player
     game.camera.update(game.player)
