@@ -35,6 +35,21 @@ class Game:
         self.can_shoot = True
         self.shoot_cooldown = 250  # milliseconds
         self.last_shot_time = 0
+    
+    def reset_game(self):
+        """Reset the game to initial state"""
+        # Reset player
+        self.player = Player(15 * TILE_SIZE, 15 * TILE_SIZE)
+        
+        # Reset camera
+        self.camera = Camera(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE)
+        
+        # Clear all sprites
+        self.enemies.empty()
+        self.projectiles.empty()
+        
+        # Reset shooting cooldown
+        self.last_shot_time = 0
         
     def run(self):
         """Main game loop"""
@@ -64,8 +79,10 @@ class Game:
                 elif self.state == STATE_PLAYING:
                     if event.key == pygame.K_SPACE:
                         self.shoot(current_time)
-                elif self.state in (STATE_MENU, STATE_PAUSED):
+                elif self.state in (STATE_MENU, STATE_PAUSED, STATE_GAME_OVER):
                     if self.menu.handle_input(event):
+                        if self.state == STATE_GAME_OVER:
+                            self.reset_game()
                         self.state = STATE_PLAYING
     
     def shoot(self, current_time):
@@ -103,13 +120,13 @@ class Game:
             self.player.take_damage(enemy.damage)
             # Check for game over
             if self.player.health <= 0:
-                self.running = False
+                self.state = STATE_GAME_OVER
     
     def draw(self):
         """Draw the game"""
         self.screen.fill(BLACK)
         
-        if self.state == STATE_PLAYING or self.state == STATE_PAUSED:
+        if self.state == STATE_PLAYING or self.state == STATE_PAUSED or self.state == STATE_GAME_OVER:
             # Draw walls
             for wall in self.game_map.walls:
                 self.screen.blit(wall.image, self.camera.apply(wall))
@@ -133,9 +150,11 @@ class Game:
             self.draw_ui()
         
         if self.state == STATE_MENU:
-            self.menu.draw(is_paused=False)
+            self.menu.draw(is_paused=False, is_game_over=False)
         elif self.state == STATE_PAUSED:
-            self.menu.draw(is_paused=True)
+            self.menu.draw(is_paused=True, is_game_over=False)
+        elif self.state == STATE_GAME_OVER:
+            self.menu.draw(is_paused=False, is_game_over=True)
         
         pygame.display.flip()
     
