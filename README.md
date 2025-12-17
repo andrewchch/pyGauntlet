@@ -5,9 +5,11 @@ A Gauntlet II-inspired game implementation in pygame
 pyGauntlet is a top-down action game inspired by the classic arcade game Gauntlet II. Control a Warrior character through a tiled, scrolling dungeon filled with enemies spawned from generators. Battle your way through hordes of foes using projectile attacks while navigating around walls and obstacles.
 
 ## Features
+- **Game Menu**: Start screen with "Play" option and pause menu with "Resume" option
 - **Player Character (Warrior)**: Control a blue warrior that can move in four directions
 - **Movement**: Use arrow keys to navigate through the dungeon
 - **Combat**: Press SPACE to fire projectiles at enemies
+- **Pause Functionality**: Press ESC to pause/resume the game at any time
 - **Enemy Spawners**: Purple generators continuously spawn red enemies
 - **AI Enemies**: Enemies chase the player using intelligent pathfinding
 - **Collision Detection**: Both player and enemies are blocked by gray wall tiles
@@ -39,14 +41,23 @@ pip install -r requirements.txt
 python main.py
 ```
 
+The game starts with a menu displaying "Play". Press **RETURN** or **SPACE** to begin.
+
+### Game Menu
+- **Main Menu**: Appears when the game starts with a "Play" option
+- **Pause Menu**: Press **ESC** during gameplay to pause and see the "Resume" option
+- To resume from pause: Press **RETURN**, **SPACE**, or **ESC** again
+
 ### Controls
 - **Arrow Keys**: Move the Warrior character
   - ↑ Up
   - ↓ Down
   - ← Left
   - → Right
-- **SPACE**: Fire projectile in the last direction moved
-- **ESC / Close Window**: Quit the game
+- **SPACE**: Fire projectile in the last direction moved / Select menu option
+- **RETURN/ENTER**: Select menu option
+- **ESC**: Pause/resume game
+- **Close Window**: Quit the game
 
 ### Game Elements
 - **Blue Square**: Your Warrior character
