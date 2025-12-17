@@ -2,7 +2,6 @@
 Enemy class with pathfinding AI
 """
 import pygame
-import heapq
 from constants import *
 
 class Enemy(pygame.sprite.Sprite):
@@ -16,17 +15,9 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.speed = ENEMY_SPEED
-        self.path_update_counter = 0
-        self.path_update_interval = 30  # Update path every 30 frames
         
     def update(self, player, walls, game_map):
         """Update enemy position to move toward player"""
-        self.path_update_counter += 1
-        
-        # Simple movement toward player
-        if self.path_update_counter >= self.path_update_interval:
-            self.path_update_counter = 0
-            
         # Calculate direction to player
         dx = player.rect.centerx - self.rect.centerx
         dy = player.rect.centery - self.rect.centery
