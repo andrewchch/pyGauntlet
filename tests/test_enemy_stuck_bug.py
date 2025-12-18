@@ -42,9 +42,9 @@ def test_enemy_hits_wall_should_move_sideways():
     enemy = Enemy(enemy_start_x, enemy_start_y)
     
     walls = pygame.sprite.Group()
-    # Horizontal wall at y = 2*TILE_SIZE
+    # Horizontal wall at y = 2*TILE_SIZE (Wall class multiplies by TILE_SIZE)
     for i in range(5):
-        wall = Wall(i * TILE_SIZE, 2 * TILE_SIZE)
+        wall = Wall(i, 2)
         walls.add(wall)
     
     game_map = GameMap()

@@ -41,8 +41,8 @@ def test_vertical_movement_blocked_should_try_horizontal():
     # Position enemy just below the wall
     # Wall is at y=64 to y=96 (TILE_SIZE=32, Wall at tile 2)
     # Enemy height is TILE_SIZE-4 = 28
-    # Place enemy so its top is at y=97 (just below wall bottom at 96)
-    enemy = Enemy(TILE_SIZE + 10, 97)  # y = 97, just below the wall
+    # Place enemy so its top is at wall bottom + 1 pixel
+    enemy = Enemy(TILE_SIZE + 10, 3 * TILE_SIZE + 1)  # y = 97, just below the wall
     
     # Create a horizontal wall between them (Wall class multiplies coords by TILE_SIZE)
     walls = pygame.sprite.Group()

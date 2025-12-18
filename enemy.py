@@ -49,7 +49,6 @@ class Enemy(pygame.sprite.Sprite):
         
         # Try to move
         old_x, old_y = self.rect.x, self.rect.y
-        moved = False
         
         if primary_is_horizontal:
             # Try horizontal movement first
@@ -61,10 +60,6 @@ class Enemy(pygame.sprite.Sprite):
                     self.rect.y += move_y_alternate
                     if self.check_collision(walls):
                         self.rect.y = old_y
-                    else:
-                        moved = True
-            else:
-                moved = True
         else:
             # Try vertical movement first
             self.rect.y += move_y_primary
@@ -75,10 +70,6 @@ class Enemy(pygame.sprite.Sprite):
                     self.rect.x += move_x_alternate
                     if self.check_collision(walls):
                         self.rect.x = old_x
-                    else:
-                        moved = True
-            else:
-                moved = True
     
     def check_collision(self, walls):
         """Check if enemy collides with any wall"""
