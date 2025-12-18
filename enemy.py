@@ -34,7 +34,7 @@ class Enemy(pygame.sprite.Sprite):
             if dy > 0:
                 move_y_alternate = min(self.speed, dy)
             else:
-                move_y_alternate = max(-self.speed, dy) if dy != 0 else 0
+                move_y_alternate = max(-self.speed, dy)
         else:
             # Prioritize vertical movement
             primary_is_horizontal = False
@@ -45,7 +45,7 @@ class Enemy(pygame.sprite.Sprite):
             if dx > 0:
                 move_x_alternate = min(self.speed, dx)
             else:
-                move_x_alternate = max(-self.speed, dx) if dx != 0 else 0
+                move_x_alternate = max(-self.speed, dx)
         
         # Try to move
         old_x, old_y = self.rect.x, self.rect.y

@@ -39,10 +39,10 @@ def test_enemy_stops_at_diagonal_wall():
     enemy = Enemy(2 * TILE_SIZE, 3 * TILE_SIZE)
     
     walls = pygame.sprite.Group()
-    # Create horizontal wall between enemy and player
-    wall1 = Wall(2 * TILE_SIZE, 2 * TILE_SIZE)
-    wall2 = Wall(3 * TILE_SIZE, 2 * TILE_SIZE)
-    wall3 = Wall(4 * TILE_SIZE, 2 * TILE_SIZE)
+    # Create horizontal wall between enemy and player (Wall class multiplies coords by TILE_SIZE)
+    wall1 = Wall(2, 2)
+    wall2 = Wall(3, 2)
+    wall3 = Wall(4, 2)
     walls.add(wall1, wall2, wall3)
     
     game_map = GameMap()
@@ -111,10 +111,10 @@ def test_enemy_blocked_by_corner():
     enemy = Enemy(2 * TILE_SIZE, 3 * TILE_SIZE)
     
     walls = pygame.sprite.Group()
-    # L-shaped walls
-    wall1 = Wall(1 * TILE_SIZE, 2 * TILE_SIZE)
-    wall2 = Wall(2 * TILE_SIZE, 2 * TILE_SIZE)
-    wall3 = Wall(1 * TILE_SIZE, 3 * TILE_SIZE)
+    # L-shaped walls (Wall class multiplies coords by TILE_SIZE)
+    wall1 = Wall(1, 2)
+    wall2 = Wall(2, 2)
+    wall3 = Wall(1, 3)
     walls.add(wall1, wall2, wall3)
     
     game_map = GameMap()

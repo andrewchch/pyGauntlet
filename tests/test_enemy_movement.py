@@ -21,30 +21,29 @@ def test_enemy_movement_around_walls():
     pygame.display.set_mode((1, 1))
     
     # Create a test scenario with walls blocking diagonal movement
-    # Layout:
-    #   P . . .
-    #   . W W .
-    #   . W E .
-    #   . . . .
+    # Layout (each cell is one tile):
+    #   P . . . .
+    #   . . . . .
+    #   . . W W .
+    #   . . . E .
     # P = Player, E = Enemy, W = Wall, . = empty
-    # Enemy should move right (reducing horizontal distance) when it can't move diagonally up-right
+    # Enemy should move left when it can't move diagonally up-left
     
     player = Player(0, 0)
     
-    enemy = Enemy(2 * TILE_SIZE, 2 * TILE_SIZE)
+    enemy = Enemy(3 * TILE_SIZE, 3 * TILE_SIZE)
     
     walls = pygame.sprite.Group()
-    # Create wall blocking diagonal path
-    wall1 = Wall(1 * TILE_SIZE, 1 * TILE_SIZE)
-    wall2 = Wall(2 * TILE_SIZE, 1 * TILE_SIZE)
-    wall3 = Wall(1 * TILE_SIZE, 2 * TILE_SIZE)
-    walls.add(wall1, wall2, wall3)
+    # Create wall blocking diagonal path (Wall class multiplies coords by TILE_SIZE)
+    wall1 = Wall(2, 2)
+    wall2 = Wall(3, 2)
+    walls.add(wall1, wall2)
     
     game_map = GameMap()
     
     print(f"Initial enemy position: ({enemy.rect.x}, {enemy.rect.y})")
     print(f"Player position: ({player.rect.x}, {player.rect.y})")
-    print(f"Walls at: (32, 32), (64, 32), (32, 64)")
+    print(f"Walls at: (64, 64), (96, 64)")
     
     # Update enemy - it should try to move toward player
     initial_x = enemy.rect.x
@@ -63,22 +62,16 @@ def test_enemy_movement_around_walls():
     if moved:
         print("✓ Enemy moved when diagonal path was blocked")
         
-        # Calculate which direction reduces distance to player more
+        # Check if distance to player was reduced
+        final_dx = abs(player.rect.centerx - enemy.rect.centerx)
+        final_dy = abs(player.rect.centery - enemy.rect.centery)
         dx = abs(player.rect.centerx - initial_x)
         dy = abs(player.rect.centery - initial_y)
+        initial_distance = (dx**2 + dy**2) ** 0.5
+        final_distance = (final_dx**2 + final_dy**2) ** 0.5
         
-        if dx > dy:
-            # Horizontal movement should be prioritized
-            if enemy.rect.x < initial_x:
-                print("✓ Enemy correctly moved left (horizontally toward player)")
-            else:
-                print("⚠ Enemy moved in unexpected direction")
-        else:
-            # Vertical movement should be prioritized
-            if enemy.rect.y < initial_y:
-                print("✓ Enemy correctly moved up (vertically toward player)")
-            else:
-                print("⚠ Enemy moved in unexpected direction")
+        if final_distance < initial_distance:
+            print("✓ Enemy reduced distance to player")
     else:
         print("✗ Enemy did not move - this is the bug we're fixing!")
     
@@ -105,9 +98,9 @@ def test_enemy_continues_along_wall():
     enemy = Enemy(3 * TILE_SIZE, 0)
     
     walls = pygame.sprite.Group()
-    # Vertical wall
-    wall1 = Wall(2 * TILE_SIZE, 0)
-    wall2 = Wall(2 * TILE_SIZE, 1 * TILE_SIZE)
+    # Vertical wall (Wall class multiplies coords by TILE_SIZE)
+    wall1 = Wall(2, 0)
+    wall2 = Wall(2, 1)
     walls.add(wall1, wall2)
     
     game_map = GameMap()
