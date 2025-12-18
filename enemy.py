@@ -23,42 +23,62 @@ class Enemy(pygame.sprite.Sprite):
         dx = player.rect.centerx - self.rect.centerx
         dy = player.rect.centery - self.rect.centery
         
-        # Normalize and apply speed
+        # Determine primary and alternate directions
         if abs(dx) > abs(dy):
-            # Move horizontally
+            # Prioritize horizontal movement
+            primary_is_horizontal = True
             if dx > 0:
-                move_x = min(self.speed, dx)
+                move_x_primary = min(self.speed, dx)
             else:
-                move_x = max(-self.speed, dx)
-            move_y = 0
-        else:
-            # Move vertically
+                move_x_primary = max(-self.speed, dx)
             if dy > 0:
-                move_y = min(self.speed, dy)
+                move_y_alternate = min(self.speed, dy)
             else:
-                move_y = max(-self.speed, dy)
-            move_x = 0
+                move_y_alternate = max(-self.speed, dy) if dy != 0 else 0
+        else:
+            # Prioritize vertical movement
+            primary_is_horizontal = False
+            if dy > 0:
+                move_y_primary = min(self.speed, dy)
+            else:
+                move_y_primary = max(-self.speed, dy)
+            if dx > 0:
+                move_x_alternate = min(self.speed, dx)
+            else:
+                move_x_alternate = max(-self.speed, dx) if dx != 0 else 0
         
         # Try to move
         old_x, old_y = self.rect.x, self.rect.y
+        moved = False
         
-        # Try horizontal movement
-        if move_x != 0:
-            self.rect.x += move_x
+        if primary_is_horizontal:
+            # Try horizontal movement first
+            self.rect.x += move_x_primary
             if self.check_collision(walls):
+                # Horizontal blocked, revert and try vertical
                 self.rect.x = old_x
-                # If blocked, try vertical
-                if move_y == 0:
-                    if dy > 0:
-                        move_y = self.speed
+                if move_y_alternate != 0:
+                    self.rect.y += move_y_alternate
+                    if self.check_collision(walls):
+                        self.rect.y = old_y
                     else:
-                        move_y = -self.speed
-        
-        # Try vertical movement
-        if move_y != 0:
-            self.rect.y += move_y
+                        moved = True
+            else:
+                moved = True
+        else:
+            # Try vertical movement first
+            self.rect.y += move_y_primary
             if self.check_collision(walls):
+                # Vertical blocked, revert and try horizontal
                 self.rect.y = old_y
+                if move_x_alternate != 0:
+                    self.rect.x += move_x_alternate
+                    if self.check_collision(walls):
+                        self.rect.x = old_x
+                    else:
+                        moved = True
+            else:
+                moved = True
     
     def check_collision(self, walls):
         """Check if enemy collides with any wall"""
